@@ -1,25 +1,32 @@
 {
-  "name": "tickets",
+  "name": "luggage",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "generators": {},
-  "sourceRoot": "apps/tickets/src",
-  "prefix": "app",
+  "sourceRoot": "apps/luggage/src",
+  "prefix": "flight-demo",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "outputPath": "dist/apps/tickets",
-        "index": "apps/tickets/src/index.html",
-        "main": "apps/tickets/src/main.ts",
-        "polyfills": ["zone.js"],
-        "tsConfig": "apps/tickets/tsconfig.app.json",
-        "assets": ["apps/tickets/src/favicon.ico", "apps/tickets/src/assets"],
+        "outputPath": "dist/apps/luggage",
+        "index": "apps/luggage/src/index.html",
+        "main": "apps/luggage/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/luggage/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/luggage/src/favicon.ico",
+          "apps/luggage/src/assets"
+        ],
         "styles": [
-          "@angular/material/prebuilt-themes/indigo-pink.css",
           "node_modules/@angular-architects/paper-design/assets/css/bootstrap.css",
           "node_modules/@angular-architects/paper-design/assets/scss/paper-dashboard.scss",
-          "apps/tickets/src/styles.css"
+          "apps/luggage/src/styles.scss"
         ],
         "scripts": []
       },
@@ -52,15 +59,12 @@
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
-      "options": {
-        "port": 4201
-      },
       "configurations": {
         "production": {
-          "browserTarget": "tickets:build:production"
+          "browserTarget": "luggage:build:production"
         },
         "development": {
-          "browserTarget": "tickets:build:development"
+          "browserTarget": "luggage:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -68,30 +72,34 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "tickets:build"
-      }
-    },
-    "test": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "options": {
-        "browsers": "ChromeHeadless",
-        "watch": false,
-        "polyfills": ["zone.js", "zone.js/testing"],
-        "tsConfig": "apps/tickets/tsconfig.spec.json",
-        "assets": ["apps/tickets/src/favicon.ico", "apps/tickets/src/assets"],
-        "styles": [
-          "@angular/material/prebuilt-themes/indigo-pink.css",
-          "apps/tickets/src/styles.css"
-        ],
-        "scripts": []
+        "browserTarget": "luggage:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/tickets/**/*.ts", "apps/tickets/**/*.html"]
+        "lintFilePatterns": [
+          "apps/luggage/**/*.ts",
+          "apps/luggage/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/luggage/jest.config.ts",
+        "passWithNoTests": true
       }
     }
   },
-  "tags": ["domain:tickets", "type:app"]
+  "tags": [
+    "domain:luggage",
+    "type:app"
+  ]
 }
