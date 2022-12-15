@@ -1,12 +1,12 @@
 <h1 class="title">Lookahead</h1>
 
-<div class="mb10" [ngStyle]="{ color: (online$ | async) ? 'green' : 'red' }">
+<div [ngStyle]="{ color: (online$ | async) ? 'green' : 'red' }" class="mb10">
   Online: {{ online$ | async }}
 </div>
 
 <div class="control-group">
   <label>City</label>
-  <input [formControl]="control" class="form-control" />
+  <input (change)="load()" [formControl]="control" class="form-control"/>
 </div>
 
 <div *ngIf="loading$ | async">Loading ...</div>

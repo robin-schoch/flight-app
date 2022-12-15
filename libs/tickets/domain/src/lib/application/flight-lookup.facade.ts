@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -14,40 +14,40 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { Flight } from '../entities/flight';
-import { FlightService } from '../infrastructure/flight.service';
+import {Flight} from '../entities/flight';
+import {FlightService} from '../infrastructure/flight.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class FlightLookupFacade {
   flightService = inject(FlightService);
-
-  // Source
-  private input$ = new BehaviorSubject<string>('');
-
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  private errorSubject = new BehaviorSubject<unknown>({});
-
-  // Sinks
-  readonly loading$ = this.loadingSubject.asObservable();
-  readonly error$ = this.errorSubject.asObservable();
-
   readonly online$ = interval(2000).pipe(
     startWith(-1),
     tap((v) => console.log('counter', v)),
     map(() => Math.random() < 0.5),
     distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
+    shareReplay({bufferSize: 1, refCount: true})
   );
+  // Source
+  private input$ = new BehaviorSubject<string>('');
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  // Sinks
+  readonly loading$ = this.loadingSubject.asObservable();
 
   readonly flights$ = combineLatest({
     input: this.input$,
     online: this.online$,
   }).pipe(
-    filter((combined) => combined.online),
+    filter(({online}) => online),
     tap(() => this.loadingSubject.next(true)),
-    switchMap((combined) => this.load(combined.input)),
+    switchMap(({input}) => this.load(input)),
     tap(() => this.loadingSubject.next(false))
   );
+  private errorSubject = new BehaviorSubject<unknown>({});
+  readonly error$ = this.errorSubject.asObservable();
+
+  lookup(filter: string): void {
+    this.input$.next(filter);
+  }
 
   private load(filter: string): Observable<Flight[]> {
     if (!filter) {
@@ -60,9 +60,5 @@ export class FlightLookupFacade {
         return of([]);
       })
     );
-  }
-
-  lookup(filter: string): void {
-    this.input$.next(filter);
   }
 }

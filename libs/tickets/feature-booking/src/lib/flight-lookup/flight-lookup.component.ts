@@ -1,8 +1,8 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FlightLookupFacade } from '@flight-demo/tickets/domain';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FlightLookupFacade} from '@flight-demo/tickets/domain';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime, filter, Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'tickets-flight-lookup',
@@ -14,21 +14,18 @@ import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
 export class FlightLookupComponent implements OnInit, OnDestroy {
   facade = inject(FlightLookupFacade);
 
-  control = new FormControl('', { nonNullable: true });
-
-  // Source
-  private close$ = new Subject<void>();
-
+  control = new FormControl('', {nonNullable: true});
   from$ = this.control.valueChanges.pipe(
     filter((v) => v.length >= 3),
     debounceTime(300)
   );
-
   // Sink
   flights$ = this.facade.flights$;
   error$ = this.facade.error$;
   loading$ = this.facade.loading$;
   online$ = this.facade.online$;
+  // Source
+  private close$ = new Subject<void>();
 
   ngOnInit(): void {
     this.from$.subscribe((value) => {
@@ -42,5 +39,10 @@ export class FlightLookupComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.close$.next();
+    this.close$.complete();
+  }
+
+  load() {
+    this.facade.lookup(this.control.value)
   }
 }
