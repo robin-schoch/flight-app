@@ -1,9 +1,10 @@
-import { inject } from '@angular/core';
-import { Routes } from '@angular/router';
-import { ConfigService } from '@flight-demo/shared/util-config';
-import { AboutComponent } from './about/about.component';
-import { HomeComponent } from './home/home.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import {inject} from '@angular/core';
+import {Routes} from '@angular/router';
+import {ConfigService} from '@flight-demo/shared/util-config';
+import {AboutComponent} from './about/about.component';
+import {HomeComponent} from './home/home.component';
+import {NotFoundComponent} from './not-found/not-found.component';
+import {loadRemoteModule} from '@angular-architects/module-federation';
 
 export const APP_ROUTES: Routes = [
   {
@@ -22,6 +23,14 @@ export const APP_ROUTES: Routes = [
       config: () => inject(ConfigService).loaded$,
     },
     children: [
+      {
+        path: 'checkin',
+        loadComponent: () => loadRemoteModule('checkin', './Component'),
+      },
+      {
+        path: 'luggage',
+        loadChildren: () => loadRemoteModule('luggage', './routes'),
+      },
       {
         path: 'flight-booking',
         loadChildren: () =>

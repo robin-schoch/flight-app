@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ManageComponent } from '@flight-demo/checkin/feature-manage';
+import {CommonModule} from '@angular/common';
+import {Component} from '@angular/core';
+import {ManageComponent} from '@flight-demo/checkin/feature-manage';
 
 @Component({
   standalone: true,
@@ -12,3 +12,5 @@ import { ManageComponent } from '@flight-demo/checkin/feature-manage';
 export class AppComponent {
   title = 'checkin';
 }
+
+export default AppComponent;

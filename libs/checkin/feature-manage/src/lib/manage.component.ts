@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ManageFacade } from '@flight-demo/checkin/domain';
-import { CityPipe } from '@flight-demo/shared/ui-common';
-import { CityValidatorDirective } from '@flight-demo/shared/util-validation';
+import {Component, inject, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ManageFacade} from '@flight-demo/checkin/domain';
+import {CityPipe} from '@flight-demo/shared/ui-common';
+import {CityValidatorDirective} from '@flight-demo/shared/util-validation';
+import {AuthService} from "@flight-demo/shared/util-auth";
+import {map, Observable} from "rxjs";
 
 @Component({
   standalone: true,
@@ -14,10 +16,19 @@ import { CityValidatorDirective } from '@flight-demo/shared/util-validation';
 export class ManageComponent implements OnInit {
   ticketList$ = this.manageFacade.ticketList$;
 
-  constructor(private manageFacade: ManageFacade) {}
+  message = 'Check in now!';
+
+  authService = inject(AuthService)
+
+  user$: Observable<string> = this.authService.currentUser$.pipe(map(user => user === '' ? 'no user' : `Chk in now, ${user}!`));
+
+
+  constructor(private manageFacade: ManageFacade) {
+  }
 
   ngOnInit() {
     this.load();
+
   }
 
   load(): void {
