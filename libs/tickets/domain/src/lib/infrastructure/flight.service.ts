@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Flight } from '../entities/flight';
-import { DefaultFlightService } from './default-flight.service';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Flight} from '../entities/flight';
+import {DefaultFlightService} from './default-flight.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,5 +9,8 @@ import { DefaultFlightService } from './default-flight.service';
 })
 export abstract class FlightService {
   abstract find(from: string, to: string): Observable<Flight[]>;
+
   abstract findById(id: string): Observable<Flight>;
+
+  abstract save(flight: Flight): Observable<Flight>;
 }

@@ -1,14 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  Injector,
-  Type,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
-import { NextFlightsService } from './next-flights.service';
-import { loadRemoteModule } from '@angular-architects/module-federation';
+import {AfterViewInit, Component, inject, Injector, Type, ViewChild, ViewContainerRef,} from '@angular/core';
+import {NextFlightsService} from './next-flights.service';
+import {Store} from "@ngrx/store";
+import {selectPassengersWithTickets, selectTicketsWithPassengers} from "@flight-demo/tickets/domain";
 
 @Component({
   selector: 'app-next-flights',
@@ -16,7 +9,12 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
   styleUrls: ['./next-flights.component.css'],
 })
 export class NextFlightsComponent implements AfterViewInit {
-  @ViewChild('placeholder', { read: ViewContainerRef })
+
+  store = inject(Store);
+  tickets = this.store.select(selectTicketsWithPassengers);
+  passengers = this.store.select(selectPassengersWithTickets);
+
+  @ViewChild('placeholder', {read: ViewContainerRef})
   placeholder: ViewContainerRef | undefined;
 
   injector = inject(Injector);

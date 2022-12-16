@@ -1,4 +1,4 @@
-<div class="p40">
+<div *ngIf="loaded$ | async" class="p40">
   <h2>Flight Edit (Reactive)</h2>
 
   <app-validation-errors
@@ -11,16 +11,16 @@
     field="flight"
   ></app-validation-errors>
 
-  <div class="alert alert-info" *ngIf="form?.controls?.['from']?.pending">
+  <div *ngIf="form?.controls?.['from']?.pending" class="alert alert-info">
     Validating ...
   </div>
 
   <form [formGroup]="form">
-    <input formControlName="id" />
-    <input formControlName="from" />
-    <input formControlName="to" />
-    <input formControlName="date" />
-    <input formControlName="delayed" type="checkbox" />
+    <input formControlName="id"/>
+    <input formControlName="from"/>
+    <input formControlName="to"/>
+    <input formControlName="date"/>
+    <input formControlName="delayed" type="checkbox"/>
   </form>
 
   <div>

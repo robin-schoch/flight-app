@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Flight } from '../entities/flight';
-import { FlightService } from './flight.service';
-import { ConfigService } from '@flight-demo/shared/util-config';
+import {HttpClient} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Flight} from '../entities/flight';
+import {FlightService} from './flight.service';
+import {ConfigService} from '@flight-demo/shared/util-config';
+
 @Injectable()
 export class DefaultFlightService implements FlightService {
   private http = inject(HttpClient);
@@ -16,9 +17,9 @@ export class DefaultFlightService implements FlightService {
       Accept: 'application/json',
     };
 
-    const params = { from, to };
+    const params = {from, to};
 
-    return this.http.get<Flight[]>(url, { headers, params });
+    return this.http.get<Flight[]>(url, {headers, params});
   }
 
   findById(id: string): Observable<Flight> {
@@ -28,8 +29,18 @@ export class DefaultFlightService implements FlightService {
       Accept: 'application/json',
     };
 
-    const params = { id };
+    const params = {id};
 
-    return this.http.get<Flight>(url, { headers, params });
+    return this.http.get<Flight>(url, {headers, params});
+  }
+
+  save(flight: Flight): Observable<Flight> {
+    const url = `${this.configService.config.baseUrl}/flight`;
+
+    const headers = {
+      Accept: 'application/json',
+    };
+
+    return this.http.post<Flight>(url, flight, {headers});
   }
 }
